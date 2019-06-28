@@ -8,7 +8,6 @@ require("dotenv").config();
 const PORT = process.env.PORT || 4000;
 
 const { initPayment, responsePayment } = require("./paytm/services/index");
-const { emailReg, fbLog, googleLog } = require("./server.js");
 
 app.use(cors());
 
@@ -43,6 +42,43 @@ app.post("/paywithpaytmresponse", (req, res) => {
   );
 });
 
+const professionalSkills = [
+  'Adaptable', 
+  'Attentive to detail',
+  'Collaborative',
+  'Communication',
+  'Creative',
+  'Curious',
+  'Customer service',
+  'Daring',
+  'Decision making',
+  'Empathy',
+  'Leadership',
+  'Multitasking',
+  'Passion',
+  'Positivity',
+  'Presentation',
+  'Problem solving',
+  'Self-motivation',
+  'Teamwork',
+  'Time management',
+  'Work ethic'  
+];
+
+const skills = [
+  'C++',
+  'Java',
+  'JavaScript',
+  'HTML',
+  'CSS'
+];
+
+app.get('/resume-form', (req, res) => {
+  res.send({
+    professionalSkills,
+    skills
+  });
+});
 
 app.listen(PORT, () => {
   console.log("Running on " + PORT);
