@@ -1,14 +1,6 @@
 var auth = require("firebaseauth");
 var firebase = new auth(process.env.AIzaSyBoLcgbWMf1hnTpvVYcVBcCCzZt5qiVERQ);
 
-const emailReg = firebase.registerWithEmail(email, password, (err, result) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(result);
-  }
-});
-
 const fbLog = firebase.loginWithFacebook(token, (err, result) => {
   if (err) {
     console.log(err);

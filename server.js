@@ -43,32 +43,6 @@ app.post("/paywithpaytmresponse", (req, res) => {
   );
 });
 
-app.post("/signup", (req, res) => {
-  emailReg(req.query.email, req.query.password).then(
-    success => {
-      // render main page
-    },
-    error => {
-      res.send(error);
-    }
-  );
-  googleLog(req.query.token).then(
-    success => {
-      //google sign in
-    },
-    error => {
-      res.send(error);
-    }
-  );
-  fbLog(req.query.token).then(
-    success => {
-      //facebook login
-    },
-    error => {
-      res.send(error);
-    }
-  );
-});
 
 app.listen(PORT, () => {
   console.log("Running on " + PORT);
