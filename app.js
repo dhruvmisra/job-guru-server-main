@@ -1,18 +1,14 @@
 const express = require("express");
 const AppRouter = require("./Router/AppRouter");
-
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
+const cors = require('cors')
 
-function modifyResponseBody(req, res, next) {
-    res.header(`Access-Control-Allow-Origin`, `*`);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.header(`Access-Control-Allow-Headers`, `Origin, X-Requested-With, Content-Type, Accept`);
-    req.headers[`content-type`] = req.headers[`content-type`] || `application/json`;
-    next();
-}
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.use(modifyResponseBody);
 new AppRouter(app).initRoutes();
 
 app.listen(port, () => {

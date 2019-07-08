@@ -18,8 +18,16 @@
   },
   "homepage": "https://github.com/dhruvmisra/job-guru-server-main#readme",
   "dependencies": {
+    "@google-cloud/storage": "^3.0.2",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "nodemon": "^1.19.1"
+    "firebase": "^6.2.4",
+    "firebase-admin": "^8.2.0",
+    "multer": "^1.4.1",
+    "nodemon": "^1.19.1",
+    "payumoney-node": "^2.0.1",
+    "payumoney_nodejs": "^2.0.4",
+    "request": "^2.88.0"
   }
 }
