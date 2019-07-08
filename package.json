@@ -1,25 +1,22 @@
 {
-  "name": "paytm-integration",
+  "name": "job-guru-server-main",
   "version": "1.0.0",
-  "description": "Paytm Integration",
+  "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "test",
-    "start": "nodemon server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Aditya Raval",
-  "homepage": "https://github.com/adityaraval/paytm-integration-nodejs-express#readme",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhruvmisra/job-guru-server-main.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dhruvmisra/job-guru-server-main/issues"
+  },
+  "homepage": "https://github.com/dhruvmisra/job-guru-server-main#readme",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "cors": "^2.8.4",
-    "dotenv": "^6.0.0",
-    "ejs": "^2.6.1",
-    "express": "^4.16.3",
-    "firebaseauth": "^1.0.0",
-    "shortid": "^2.2.10"
-  },
-  "devDependencies": {
-    "nodemon": "^1.19.1"
+    "express": "^4.17.1"
   }
 }
