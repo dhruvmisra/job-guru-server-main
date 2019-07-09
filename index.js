@@ -1,16 +1,15 @@
 const express = require("express");
 const AppRouter = require("./Router/AppRouter");
 const bodyParser = require('body-parser');
-const index = express();
-const port = 3000;
+const app = express();
 const cors = require('cors');
 
-index.use(cors());
-index.use(bodyParser.urlencoded({ extended: false }));
-index.use(bodyParser.json());
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-new AppRouter(index).initRoutes();
-
-index.listen(port, () => {
-    console.log(`Server Listening on port`, port);
+new AppRouter(app).initRoutes();
+const port = app.listen(process.env.PORT || 3000);
+app.listen(port, () => {
+    console.log(`Server Listening on port 3000`);
 });
