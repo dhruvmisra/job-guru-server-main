@@ -21,10 +21,9 @@ class AppRouter {
         });
 
         this.app.post("/v1/saveUserData", async (req, res) => {
-            const userId = Date.now();
+            const userId = req.body.userId;
             const ref = firebase.database().ref('users/' + userId);
             const user = req.body;
-            user.userId = userId;
             try {
                 await ref.set(user);
                 res.sendStatus(200);
@@ -41,7 +40,6 @@ class AppRouter {
             try {
                 await ref.once('value', snap => {
                     userData = snap.val();
-                    console.log(userData);
                     res.json(userData);
                 });
             } catch (e) {
