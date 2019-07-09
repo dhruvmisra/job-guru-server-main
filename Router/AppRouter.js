@@ -15,6 +15,7 @@ class AppRouter {
     }
 
     initRoutes() {
+        let uid = "";
         this.app.get('/v1/checkServerStatus', (req, res) => {
             const datetime = Date();
             res.send(datetime);
@@ -49,20 +50,35 @@ class AppRouter {
         });
 
         this.app.post("/v1/makePayment", async (req, res) => {
-            const request = req.body;
-            payumoney.makePayment(request, (error, response) => {
+            uid = req.body.userData.userId;
+            payumoney.makePayment(req.body.payment, async (error, response) => {
                 if (error) {
-                    console.error("Payment failed");
+                    console.error("Payment failed ", error);
                     res.send(500);
                 } else {
                     console.log("Payment success ", response);
-                    res.send(200);
+                    res.json({"paymentUrl": response});
                 }
             });
         });
 
         this.app.post("/payu/success", async (req, res) => {
-            console.log("request ", req.body);
+            const payment = {
+                "payment": {
+                    "txnid": req.body.txnid,
+                    "amount": req.body.amount,
+                    "productinfo": req.body.productinfo
+                }
+            };
+            const ref = firebase.database().ref(`users/${uid}`);
+            console.log("payment ", payment);
+            try {
+                await ref.update(payment);
+                res.sendStatus(200);
+            } catch (e) {
+                console.error("Exception ", e);
+                res.sendStatus(500);
+            }
         });
 
         this.app.post("/payu/fail", async (req, res) => {
