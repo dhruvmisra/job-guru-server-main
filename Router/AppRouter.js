@@ -16,7 +16,7 @@ class AppRouter {
 
     initRoutes() {
         let uid = "";
-        this.app.get('/v1/checkServerStatus', (req, res) => {
+        this.app.get('/', (req, res) => {
             const datetime = Date();
             res.send(datetime);
         });
