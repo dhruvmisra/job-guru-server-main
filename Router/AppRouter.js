@@ -1,8 +1,6 @@
-const admin = require('firebase-admin');
+const firebase = require('../firebase');
 const config = require('../config');
 const payumoney = require('payumoney-node');
-admin.initializeApp(config.Config.firebaseConfig);
-const db = admin.firestore();
 const nodemailer = require('nodemailer');
 
 
@@ -21,48 +19,52 @@ class AppRouter {
             const datetime = Date();
             res.send(datetime);
         });
+
         this.app.post("/v1/saveUserData", async (req, res) => {
-            console.log("request body ", req.body);
-            const ref = db.collection("users").doc(req.body.email);
+            const userId = Date.now();
+            const ref = firebase.database().ref('users/' + userId);
             const user = req.body;
+            user.userId = userId;
             try {
                 await ref.set(user);
-                res.send(200);
+                res.sendStatus(200);
             } catch (e) {
-                console.log("Exception ", e);
+                console.log("Exception: ", e);
                 res.sendStatus(500);
             }
         });
-        this.app.get("/v1/getUserData/:email", async (req, res) => {
-            const userEmail = req.params.email;
-            const ref = db.collection("users").doc(userEmail);
+
+        this.app.get("/v1/getUserData/:id", async (req, res) => {
+            const userId = req.params.id;
+            const ref = firebase.database().ref('users/' + userId);
             let userData = {};
             try {
-                await ref.get().then((result) => {
-                    console.log("result ", result["_fieldsProto"]);
-                    userData = result["_fieldsProto"];
+                await ref.once('value', snap => {
+                    userData = snap.val();
+                    console.log(userData);
+                    res.json(userData);
                 });
-                res.json(userData);
             } catch (e) {
-                console.log("Exception ", e);
+                console.log("Exception: ", e);
                 res.sendStatus(500);
             }
         });
+
         this.app.post("/v1/makePayment", async (req, res) => {
-           const request = req.body;
-           payumoney.makePayment(request, (error, response) => {
-              if (error) {
-                  console.error("Payment failed");
-                  res.send(500);
-              } else {
-                  console.log("Payment success ", response);
-                  res.send(200);
-              }
-           });
+            const request = req.body;
+            payumoney.makePayment(request, (error, response) => {
+                if (error) {
+                    console.error("Payment failed");
+                    res.send(500);
+                } else {
+                    console.log("Payment success ", response);
+                    res.send(200);
+                }
+            });
         });
 
         this.app.post("/payu/success", async (req, res) => {
-           console.log("request ", req.body);
+            console.log("request ", req.body);
         });
 
         this.app.post("/payu/fail", async (req, res) => {
@@ -72,10 +74,10 @@ class AppRouter {
         this.app.post("/v1/sendEmail", async (req, res) => {
             console.log("pdf file ", "sample.pdf");
             const transporter = nodemailer.createTransport({
-               service: 'gmail',
+                service: 'gmail',
                 auth: {
-                   user: 'flemingsteven49',
-                   pass: 'fleming007'
+                    user: 'flemingsteven49',
+                    pass: 'fleming007'
                 }
             });
             const mailOptions = {
@@ -84,7 +86,7 @@ class AppRouter {
                 subject: 'Sending email using node js',
                 text: 'that was easy'
             };
-            transporter.sendMail(mailOptions, function(error, info){
+            transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     console.log(error);
                     res.send(500);
