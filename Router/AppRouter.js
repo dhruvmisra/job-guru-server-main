@@ -1,8 +1,10 @@
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 const config = require('../config');
 const payumoney = require('payumoney-node');
 admin.initializeApp(config.Config.firebaseConfig);
 const db = admin.firestore();
+const nodemailer = require('nodemailer');
+
 
 payumoney.setKeys(config.Config.payu.merchantKey, config.Config.payu.merchantSalt, config.Config.payu.authHeader);
 payumoney.isProdMode(false);
@@ -58,11 +60,39 @@ class AppRouter {
               }
            });
         });
+
         this.app.post("/payu/success", async (req, res) => {
            console.log("request ", req.body);
         });
+
         this.app.post("/payu/fail", async (req, res) => {
             console.log("request ", req.body);
+        });
+
+        this.app.post("/v1/sendEmail", async (req, res) => {
+            console.log("pdf file ", "sample.pdf");
+            const transporter = nodemailer.createTransport({
+               service: 'gmail',
+                auth: {
+                   user: 'flemingsteven49',
+                   pass: 'fleming007'
+                }
+            });
+            const mailOptions = {
+                from: 'flemingsteven49@gmail.com',
+                to: 'sharmashivank59@gmail.com',
+                subject: 'Sending email using node js',
+                text: 'that was easy'
+            };
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error);
+                    res.send(500);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                    res.send(200);
+                }
+            });
         });
     }
 }
