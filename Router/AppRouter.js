@@ -50,6 +50,7 @@ class AppRouter {
         });
 
         this.app.post("/v1/makePayment", async (req, res) => {
+            console.log("request ", req.body);
             uid = req.body.userData.userId;
             payumoney.makePayment(req.body.payment, async (error, response) => {
                 if (error) {
@@ -57,7 +58,7 @@ class AppRouter {
                     res.send(500);
                 } else {
                     console.log("Payment success ", response);
-                    res.json({"paymentUrl": response});
+                    res.send(response);
                 }
             });
         });
@@ -74,7 +75,7 @@ class AppRouter {
             console.log("payment ", payment);
             try {
                 await ref.update(payment);
-                res.sendStatus(200);
+                res.redirect("http://localhost:8080/job-guru-final/payment");
             } catch (e) {
                 console.error("Exception ", e);
                 res.sendStatus(500);
@@ -82,12 +83,12 @@ class AppRouter {
         });
 
         this.app.post("/payu/fail", async (req, res) => {
-            console.log("request ", req.body);
+            res.redirect("http://localhost:8080/job-guru-final/payment");
         });
 
         this.app.post("/v1/sendEmail", async (req, res) => {
             let pdfUrl = "";
-          await firebase.storage().ref().child('users/' + req.body.userId).getDownloadURL().then((downloadUrl) => {
+            await firebase.storage().ref().child('users/' + req.body.userId).getDownloadURL().then((downloadUrl) => {
                 console.log("download url ", downloadUrl);
                 pdfUrl = downloadUrl;
             });
@@ -113,6 +114,40 @@ class AppRouter {
                     res.sendStatus(200);
                 }
             });
+        });
+
+        this.app.get("/v1/resume-form", (req, res) => {
+            const professionalSkills = [
+                'Adaptable',
+                'Attentive to detail',
+                'Collaborative',
+                'Communication',
+                'Creative',
+                'Curious',
+                'Customer service',
+                'Daring',
+                'Decision making',
+                'Empathy',
+                'Leadership',
+                'Multitasking',
+                'Passion',
+                'Positivity',
+                'Presentation',
+                'Problem solving',
+                'Self-motivation',
+                'Teamwork',
+                'Time management',
+                'Work ethic'
+            ];
+
+            const skills = [
+                'C++',
+                'Java',
+                'JavaScript',
+                'HTML',
+                'CSS'
+            ];
+            res.json({professionalSkills, skills});
         });
     }
 }
