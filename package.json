@@ -30,6 +30,7 @@
     "nodemon": "^1.19.1",
     "payumoney-node": "^2.0.1",
     "payumoney_nodejs": "^2.0.4",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "xhr2": "^0.2.0"
   }
 }

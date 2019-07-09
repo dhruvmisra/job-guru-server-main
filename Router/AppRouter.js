@@ -2,7 +2,7 @@ const firebase = require('../firebase');
 const config = require('../config');
 const payumoney = require('payumoney-node');
 const nodemailer = require('nodemailer');
-
+global.XMLHttpRequest = require("xhr2");
 
 payumoney.setKeys(config.Config.payu.merchantKey, config.Config.payu.merchantSalt, config.Config.payu.authHeader);
 payumoney.isProdMode(false);
@@ -70,7 +70,11 @@ class AppRouter {
         });
 
         this.app.post("/v1/sendEmail", async (req, res) => {
-            console.log("pdf file ", "sample.pdf");
+            let pdfUrl = "";
+          await firebase.storage().ref().child('users/' + req.body.userId).getDownloadURL().then((downloadUrl) => {
+                console.log("download url ", downloadUrl);
+                pdfUrl = downloadUrl;
+            });
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
@@ -80,17 +84,17 @@ class AppRouter {
             });
             const mailOptions = {
                 from: 'flemingsteven49@gmail.com',
-                to: 'sharmashivank59@gmail.com',
+                to: 'dhruvistheone@gmail.com',
                 subject: 'Sending email using node js',
-                text: 'that was easy'
+                text: `Resume Download link: ${pdfUrl}`
             };
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     console.log(error);
-                    res.send(500);
+                    res.sendStatus(500);
                 } else {
                     console.log('Email sent: ' + info.response);
-                    res.send(200);
+                    res.sendStatus(200);
                 }
             });
         });
