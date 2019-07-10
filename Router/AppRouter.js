@@ -22,9 +22,10 @@ class AppRouter {
         });
 
         this.app.post("/v1/saveUserData", async (req, res) => {
-            const userId = req.body.userId;
-            const ref = firebase.database().ref('users/' + userId + "/details");
-            const user = req.body;
+            const userId = req.body.data.userId;
+            const savePath = req.body.savePath;
+            const ref = firebase.database().ref('users/' + userId + savePath);
+            const user = req.body.data;
             try {
                 await ref.set(user);
                 res.sendStatus(200);
