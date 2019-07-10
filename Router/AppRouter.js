@@ -37,7 +37,7 @@ class AppRouter {
 
         this.app.get("/v1/getUserData/:id", async (req, res) => {
             const userId = req.params.id;
-            const ref = firebase.database().ref('users/' + userId + "/details");
+            const ref = firebase.database().ref('users/' + userId);
             let userData = {};
             try {
                 await ref.once('value', snap => {
