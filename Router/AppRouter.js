@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 global.XMLHttpRequest = require("xhr2");
 
 payumoney.setKeys(config.Config.payu.merchantKey, config.Config.payu.merchantSalt, config.Config.payu.authHeader);
-payumoney.isProdMode(false);
+payumoney.isProdMode(true);
 
 
 class AppRouter {
