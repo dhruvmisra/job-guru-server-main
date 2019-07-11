@@ -76,7 +76,7 @@ class AppRouter {
             console.log("payment ", payment);
             try {
                 await ref.update(payment);
-                res.redirect("http://localhost:8080/job-guru-final/#/payment");
+                res.redirect("http://www.ourjobguru.com/#/payment");
             } catch (e) {
                 console.error("Exception ", e);
                 res.sendStatus(500);
@@ -84,7 +84,7 @@ class AppRouter {
         });
 
         this.app.post("/payu/fail", async (req, res) => {
-            res.redirect("http://localhost:8080/job-guru-final/#/payment");
+            res.redirect("http://www.ourjobguru.com/#/payment");
         });
 
         this.app.post("/v1/sendEmail", async (req, res) => {
